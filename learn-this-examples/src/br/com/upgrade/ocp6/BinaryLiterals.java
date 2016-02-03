@@ -69,7 +69,7 @@ public class BinaryLiterals {
 	}
 	
 	/**
-	 * Representações no formato correto dos literais numéricos com underscore
+	 * Representações válidas no formato correto dos literais numéricos com underscore
 	 */
 	private static void valid() {
 		
@@ -103,6 +103,9 @@ public class BinaryLiterals {
 		
 	}
 	
+	/**
+	 * Exemlos de como não fazer.
+	 */
 	private static void invalid() {
 	
 		System.out.println("Invalid representations:");
@@ -112,8 +115,6 @@ public class BinaryLiterals {
 		System.out.println("\n");
 		
 	}
-	
-	
 	
 }
 
