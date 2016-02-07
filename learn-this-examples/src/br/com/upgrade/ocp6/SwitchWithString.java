@@ -70,7 +70,7 @@ public class SwitchWithString {
 	
 	/**
 	 * Este exemplo é para ilustrar que não podemos utilizar a mesma String em duas verificações
-	 * (case) diferente. Se descomentr, não irá compilar.
+	 * (case) diferente. Se descomentar, não irá compilar.
 	 * @param param
 	 */
 //	private static void repeatedCaseCondition(String param) {

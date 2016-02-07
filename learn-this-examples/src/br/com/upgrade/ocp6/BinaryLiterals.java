@@ -34,6 +34,8 @@ public class BinaryLiterals {
 		System.out.println("Are 0b001 (1) and 0x1 (1) equals? " +  equals);
 		equals = false;
 		
+		System.out.println("\n");
+		
 	}
 	
 	/**
@@ -112,6 +114,7 @@ public class BinaryLiterals {
 		System.out.println("0b_1011 is invalid because the _ is before first number.");
 		System.out.println("0x10FF_ is invalid because the _ is after last number.");
 		System.out.println("0b1_0_2_0 is invalid because the 0b ins`t expressed in binary number sistem (0 or 1).");
+		System.out.println("0_08 is invalid because octal number system contains only numbers 0 to 7.");
 		System.out.println("\n");
 		
 	}
