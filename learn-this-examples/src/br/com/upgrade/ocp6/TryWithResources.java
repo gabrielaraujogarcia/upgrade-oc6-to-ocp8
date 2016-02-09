@@ -17,6 +17,7 @@ public class TryWithResources {
 		
 		testMyResource();
 		checkWhatsFirst();
+		supressedExceptions();
 		
 	}
 	
@@ -95,6 +96,37 @@ public class TryWithResources {
 	}
 	
 	/**
+	 * Este método exemplifica como recuperar exceções suprimidas quando um dos recursos encerrados lançar
+	 * uma exceção.
+	 */
+	private static void supressedExceptions() {
+		
+		System.out.println("\n");
+		System.out.println("Test supressed exception on resource close event");
+		
+		//MyResource é finalizado normalmente e as exceções de r1 e r3 são suprimidas. As exceções de r1 e r3 são exibidas
+		//após recuperar as mesmas em e.getSupressed() no bloco catch
+		try(OnCloseExceptionResource r1 = new OnCloseExceptionResource(1);
+				MyResource r2 = new MyResource();
+				OnCloseExceptionResource r3 = new OnCloseExceptionResource(2)) {
+			
+			System.out.println("Do somethink...");
+			
+		} catch (Exception e) {
+			
+			if(e.getSuppressed() != null) {
+				
+				for(Throwable t : e.getSuppressed()) {
+					System.out.println(t.getMessage());
+				}
+				
+			}
+			
+		}
+		
+	}
+	
+	/**
 	 * Este método te mostra o que você não pode fazer, estude com atenção
 	 */
 	private static void dontDoThis() {
@@ -110,6 +142,8 @@ public class TryWithResources {
 		}
 		
 	}
+	
+	
 
 	/**
 	 * Podemos criar a nossa propria class de recurso apenas implementando a interface java.lang.AutoClosable ou
@@ -144,6 +178,19 @@ public class TryWithResources {
 		@Override
 		public void close() {
 			System.out.println(" - AnotherResource: Ok i`m done...");
+		}
+		
+	}
+	
+	private static class OnCloseExceptionResource implements AutoCloseable {
+		
+		public OnCloseExceptionResource(int order) {
+			System.out.println(" - I`m " + this.getClass().getSimpleName() + order + ", I will launch an exception on close event!");
+		}
+		
+		@Override
+		public void close() throws Exception {
+			throw new Exception("Exception on close method in OnCloseExceptionResource class!");	
 		}
 		
 	}
