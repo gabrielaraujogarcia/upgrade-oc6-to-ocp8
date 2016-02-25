@@ -3,10 +3,10 @@ package br.com.upgrade.ocp6;
 public class DefaultMethod {
 	
 	/**
-	 * A partir do Java 8, as interfaces podem declarar metodos default que não precisam ser implementados pela classe 
-	 * concreta, mas podem ser sobrescritos normalmente. Podemos também declarar metodos estaticos, ideal para definir 
-	 * códigos utilitários como validar se um objeto é nulo. Mesmo sendo públicos, métodos estáticos em interfaces só
-	 * podem ser acessados na própria interface ou através da mesma, como se fosse uma classe utilitária.
+	 * A partir do Java 8, as interfaces podem declarar metodos default que nï¿½o precisam ser implementados pela classe 
+	 * concreta, mas podem ser sobrescritos normalmente. Podemos tambï¿½m declarar metodos estaticos, ideal para definir 
+	 * cï¿½digos utilitï¿½rios como validar se um objeto ï¿½ nulo. Mesmo sendo pï¿½blicos, mï¿½todos estï¿½ticos em interfaces sï¿½
+	 * podem ser acessados na prï¿½pria interface ou atravï¿½s da mesma, como se fosse uma classe utilitï¿½ria.
 	 * @author Gabriel
 	 *
 	 */
@@ -14,6 +14,11 @@ public class DefaultMethod {
 		
 		public default void doSomeThing() {
 			System.out.println("ISomeThing says: I can do some thing or i can be overridden...");
+		}
+		
+		public default void doAnotherThing() {
+			System.out.println("ISomeThing says: You can call this method directly from any instance of a concreted class "
+					+ "that implement me!");
 		}
 		
 		public static void doSomeThingUtil() {
@@ -31,27 +36,27 @@ public class DefaultMethod {
 	}
 	
 	/**
-	 * Perceba que não foi necessário implementar o método doAnotherThing que deixou de ser abstratos quando foi 
-	 * assinado como método default. Vale ressaltar que o método doSomeThingUtil não pode ser implementado por 
-	 * ser um método estático da interface e que o mesmo é visível apenas na interface ou através da mesma.
+	 * Perceba que nï¿½o foi necessï¿½rio implementar o mï¿½todo doAnotherThing que deixou de ser abstratos quando foi 
+	 * assinado como mï¿½todo default. Vale ressaltar que o mï¿½todo doSomeThingUtil nï¿½o pode ser implementado por 
+	 * ser um mï¿½todo estï¿½tico da interface e que o mesmo ï¿½ visï¿½vel apenas na interface ou atravï¿½s da mesma.
 	 * @author Gabriel
 	 *
 	 */
 	private static class FirstClass implements ISomeThing {
 		
 		public FirstClass() {
-			//para acessar os métodos estáticos da interface, como se fosse uma classe utilitária
+			//para acessar os mï¿½todos estï¿½ticos da interface, como se fosse uma classe utilitï¿½ria
 			ISomeThing.doSomeThingUtil();
 		}
 		
 	}
 	
 	/**
-	 * Quando implementamos duas interfaces diferentes mas que possuem métodos com assinaturas iguais, precisamos
-	 * obrigatóriamente sobrescrever estes métodos que possuem mesma assinatura pois o compilador não consegue identificar  
-	 * qual método ele deve executar.  Se apagar o método doSomeThing() sobrescrito, o código não compila. Não se esqueça
-	 * de estudar também a sintaxe para chamar o método da interface que deseja executar, conforme o exemplo abaixo no
-	 * método sobrescrito doSomeThing()
+	 * Quando implementamos duas interfaces diferentes mas que possuem mï¿½todos com assinaturas iguais, precisamos
+	 * obrigatï¿½riamente sobrescrever estes mï¿½todos que possuem mesma assinatura pois o compilador nï¿½o consegue identificar  
+	 * qual mï¿½todo ele deve executar.  Se apagar o mï¿½todo doSomeThing() sobrescrito, o cï¿½digo nï¿½o compila. Nï¿½o se esqueï¿½a
+	 * de estudar tambï¿½m a sintaxe para chamar o mï¿½todo da interface que deseja executar, conforme o exemplo abaixo no
+	 * mï¿½todo sobrescrito doSomeThing()
 	 * @author Gabriel
 	 *
 	 */
@@ -60,19 +65,19 @@ public class DefaultMethod {
 		@Override
 		public void doSomeThing() {
 			
-			//sintaxe para acessar o método default da interface ISomeThing
+			//sintaxe para acessar o mï¿½todo default da interface ISomeThing
 			ISomeThing.super.doSomeThing();
 
-			//sintaxe para acessar o método default da interface ISomeThing
+			//sintaxe para acessar o mï¿½todo default da interface ISomeThing
 			IAnotherThing.super.doSomeThing();
 			
-			//regra geral: [Interface].super.[Método]();
+			//regra geral: [Interface].super.[Mï¿½todo]();
 		}
 		
 	}
 	
 	/**
-	 * Podemos sobrescrever normalmente um método default
+	 * Podemos sobrescrever normalmente um mï¿½todo default
 	 * @author Gabriel
 	 *
 	 */
@@ -88,9 +93,9 @@ public class DefaultMethod {
 	}
 	
 	/**
-	 * Esta classe é uma classe filha de ThirdClass, que sobrescreve o método doSomeThing() da interface ISomeThing.
-	 * Esta classe também implementa a interface IAnotherThing. A questão a ser respondida aqui é: qual implementação
-	 * do método doSomeThing será executada? A resposta é que, uma superclasse sempre tem precedência sobre as interfaces. 
+	 * Esta classe ï¿½ uma classe filha de ThirdClass, que sobrescreve o mï¿½todo doSomeThing() da interface ISomeThing.
+	 * Esta classe tambï¿½m implementa a interface IAnotherThing. A questï¿½o a ser respondida aqui ï¿½: qual implementaï¿½ï¿½o
+	 * do mï¿½todo doSomeThing serï¿½ executada? A resposta ï¿½ que, uma superclasse sempre tem precedï¿½ncia sobre as interfaces. 
 	 * @author Gabriel
 	 *
 	 */
@@ -104,6 +109,7 @@ public class DefaultMethod {
 				+ "constructor:");
 		FirstClass fc = new FirstClass();
 		fc.doSomeThing();
+		fc.doAnotherThing();
 		System.out.println("\n");
 		
 		System.out.println("SecondClass implements ISomeThing and IAnotherThing. It's need to overridden the method"
