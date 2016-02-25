@@ -16,6 +16,8 @@ public class BlockingQueueExample {
 		UnlimitedConsumer unlimitedConsumer = new UnlimitedConsumer(queue);
 		
 		addElements();
+		removeElements();
+		retrievesElements();
 		
 		new Thread(producer).start();
 		new Thread(consumer).start();
@@ -29,8 +31,6 @@ public class BlockingQueueExample {
 		
 		System.out.println("############ Examples of add, offer and put elements to queue #############\n");
 		BlockingQueue<String> queue = new ArrayBlockingQueue<>(5);
-		StringBuilder text = new StringBuilder();
-		Iterator<String> it;
 		
 		try {
 			
@@ -76,32 +76,122 @@ public class BlockingQueueExample {
 			
 		}).start();
 			
-		it = queue.iterator();
-		
-		while(it.hasNext()) {
-			text.append(" ").append(it.next());
-		}
-		
-		System.out.println("Checking queue: " + text.toString());
-		
+		checkQueue(queue, null);
 		String head = queue.remove();
 		System.out.println("Head element was removed: " + head);
-		
-		text = new StringBuilder();
-		it = queue.iterator();
-		
-		while(it.hasNext()) {
-			text.append(" ").append(it.next());
-		}
-		
-		System.out.println("Lets check again: " + text.toString());
+		checkQueue(queue, null);
 		
 		System.out.println("\n############ Done examples of add, offer and put elements to queue #############\n");
 	}
 	
+	private static void removeElements() throws InterruptedException {
+		
+		System.out.println("############ Examples of remove, poll and take elements to queue #############\n");
+		
+		BlockingQueue<String> queue = new ArrayBlockingQueue<>(5);
+		
+		try {
+			queue.remove();
+		} catch(Exception e) {
+			System.out.println("The method remove(e) will throw an exception when it's can't possible to remove an element");
+		}
+		
+		/*
+		 * Esta thread vai remover o primeiro elemento (head) da fila assim que o mesmo for adicionado. Se este
+		 * método não for executado em uma nova thread, o mesmo irá "travar" a execução dos demais eventos até 
+		 * que ele consiga remover um elemento da lista.    
+		 */
+		new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				
+				try {
+					checkQueue(queue, "Checking queue before queue.take(): ");
+					String item = queue.take();
+					System.out.println("Removing the head element '"+ item + "' after add element to queue.");
+					checkQueue(queue, "Checking queue after queue.take(): ");
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+			
+		}).start();
+		
+		System.out.println("Add elements to queue");
+		
+		queue.offer("I will be removed!");
+		queue.offer("String 0");
+		//altere a posição teste sleep e veja o que acontece no log do console
+		Thread.sleep(1000);
+		queue.offer("String 1");
+		queue.offer("String 2");
+		queue.offer("String 3");
+		queue.offer("String 4");
+		
+		checkQueue(queue, "Checking queue after add elements: ");
+		
+		while(queue.size() > 0) {
+			System.out.println("Removing "+ queue.poll() +" element with poll()");
+		}
+		
+		System.out.println("\n############ Done of remove, poll and take elements to queue #############\n");
+		
+	}
+	
+	private static void retrievesElements() {
+		
+		System.out.println("############ Examples of element and peek on queue #############\n");
+		
+		BlockingQueue<String> queue = new ArrayBlockingQueue<>(3);
+		
+		try {
+			//lanca uma exception
+			String e = queue.element();
+		} catch(Exception e) {
+			System.out.println("The method element() will throw an exception when it's can't retrieves an element!");
+		}
+		
+		//retorna null
+		System.out.println("The method peek() will return " + queue.peek() + " when it's can't retrieves an element");
+		
+		queue.offer("String 0");
+		queue.offer("String 1");
+		queue.offer("String 2");
+		checkQueue(queue, "Added this itens to queue: ");
+		
+		//exibe o head com element()
+		System.out.println("Using element(): " + queue.element());
+		checkQueue(queue, "Tip: element() don't removes an element from queue");
+		
+		//remove um item e exibe o head com peek()
+		queue.remove();
+		System.out.println("Using remove() to remove an item then using peek() to show the head: " + queue.element());
+		checkQueue(queue, "Tip: peek() don't removes an elemento from queue");
+
+		System.out.println("\n############ Done examples of element and peek on queue #############\n");
+		
+	}
+	
+	private static void checkQueue(BlockingQueue<String> queue, String prefix) {
+		
+		Iterator<String> it = queue.iterator();
+		StringBuilder text = new StringBuilder();
+		
+		while(it.hasNext()) {
+			text.append(" ").append(it.next());
+		}
+		
+		if(prefix == null) {
+			prefix = "Checking queue: ";
+		}
+		
+		System.out.println(prefix + text.toString());
+	}
+	
 	/**
-	 * Classe que implementa um Runnable e que quando for chamado o m�todo start
-	 * ir� criar objetos e adicionar os mesmos na BlockingQueue para serem consumidos
+	 * Classe que implementa um Runnable e que quando for chamado o mï¿½todo start
+	 * irï¿½ criar objetos e adicionar os mesmos na BlockingQueue para serem consumidos
 	 * pelo Consumer.
 	 * @author Gabriel
 	 *
@@ -136,8 +226,8 @@ public class BlockingQueueExample {
 	}
 	
 	/**
-	 * Classe que implementa um Runnable e que quando for chamado o m�todo start
-	 * ir� consumir os objetos criados e adicionados na BlockingQueue pela classe
+	 * Classe que implementa um Runnable e que quando for chamado o mï¿½todo start
+	 * irï¿½ consumir os objetos criados e adicionados na BlockingQueue pela classe
 	 * Producer.
 	 * @author Gabriel
 	 *
@@ -168,7 +258,7 @@ public class BlockingQueueExample {
 	}
 	
 	/**
-	 * Runnable que adiciona elementos a BlockingQueue enquanto a capacidade m�xima n�o for 
+	 * Runnable que adiciona elementos a BlockingQueue enquanto a capacidade mï¿½xima nï¿½o for 
 	 * atingida
 	 * @author Gabriel
 	 *
