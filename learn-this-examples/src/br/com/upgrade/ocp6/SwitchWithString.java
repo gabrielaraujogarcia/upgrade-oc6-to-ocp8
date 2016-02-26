@@ -27,7 +27,7 @@ public class SwitchWithString {
 				System.out.println("Case 1");
 				break;
 
-			case"Case 2":	
+			case "Case 2":	
 				System.out.println("Case 2");
 				break;
 			
@@ -81,7 +81,7 @@ public class SwitchWithString {
 //				System.out.println("Case 1");
 //				break;
 //	
-//			case"Case 1":	
+//			case "Case 1":	
 //				System.out.println("Case 2");
 //				break;
 //			

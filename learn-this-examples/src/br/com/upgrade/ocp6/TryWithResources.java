@@ -108,7 +108,8 @@ public class TryWithResources {
 		//após recuperar as mesmas em e.getSupressed() no bloco catch
 		try(OnCloseExceptionResource r1 = new OnCloseExceptionResource(1);
 				MyResource r2 = new MyResource();
-				OnCloseExceptionResource r3 = new OnCloseExceptionResource(2)) {
+				OnCloseExceptionResource r3 = new OnCloseExceptionResource(2);
+				AnotherOnCloseExceptionResource r4 = new AnotherOnCloseExceptionResource(3)) {
 			
 			System.out.println("Do somethink...");
 			
@@ -119,9 +120,9 @@ public class TryWithResources {
 				for(Throwable t : e.getSuppressed()) {
 					System.out.println(t.getMessage());
 				}
-				
 			}
 			
+			System.out.println("For some reason, Java don't supress the last exception. I don't know why, sorry about that...");
 		}
 		
 	}
@@ -143,7 +144,6 @@ public class TryWithResources {
 		
 	}
 	
-	
 
 	/**
 	 * Podemos criar a nossa propria class de recurso apenas implementando a interface java.lang.AutoClosable ou
@@ -154,12 +154,12 @@ public class TryWithResources {
 	private static class MyResource implements AutoCloseable {
 		
 		public MyResource() {
-			System.out.println(" - MyResource: There we go!");
+			System.out.println("(MyResource) There we go!");
 		}
 		
 		@Override
 		public void close() throws Exception {
-			System.out.println(" - MyResource: It`s over!");
+			System.out.println("(MyResource) It`s over!");
 		}
 		
 	}
@@ -172,25 +172,58 @@ public class TryWithResources {
 	private static class AnotherResource implements Closeable {
 		
 		public AnotherResource() {
-			System.out.println(" - AnotherResource: My turn!");
+			System.out.println("(AnotherResource) My turn!");
 		}
 		
 		@Override
 		public void close() {
-			System.out.println(" - AnotherResource: Ok i`m done...");
+			System.out.println("(AnotherResource) Ok i`m done...");
 		}
 		
 	}
 	
+	/**
+	 * Classe que lança uma exceção quando o recurso for finalizado
+	 * @author Gabriel
+	 *
+	 */
 	private static class OnCloseExceptionResource implements AutoCloseable {
 		
+		private int order;
+		
 		public OnCloseExceptionResource(int order) {
-			System.out.println(" - I`m " + this.getClass().getSimpleName() + order + ", I will launch an exception on close event!");
+			this.order = order;
+			System.out.println("(OnCloseExceptionResource) I`m " + this.getClass().getSimpleName() + order + 
+					", I will launch an exception on close event!");
 		}
 		
 		@Override
 		public void close() throws Exception {
-			throw new Exception("Exception on close method in OnCloseExceptionResource class!");	
+			throw new Exception("(OnCloseExceptionResource) " + this.getClass().getSimpleName() + order + 
+					" launches an exception on close method.");	
+		}
+		
+	}
+	
+	/**
+	 * Classe que lança uma exceção quando o recurso for finalizado
+	 * @author Gabriel
+	 *
+	 */
+	private static class AnotherOnCloseExceptionResource implements AutoCloseable {
+		
+		private int order;
+		
+		public AnotherOnCloseExceptionResource(int order) {
+			this.order = order;
+			System.out.println("(AnotherOnCloseExceptionResource) I`m " + this.getClass().getSimpleName() + order + 
+					", I will launch an exception on close event!");
+		}
+		
+		@Override
+		public void close() throws Exception {
+			throw new Exception("(AnotherOnCloseExceptionResource) " + this.getClass().getSimpleName() + order + 
+					" launches an exception on close method.");	
 		}
 		
 	}
