@@ -16,6 +16,11 @@ public class DefaultMethod {
 			System.out.println("ISomeThing says: I can do some thing or i can be overridden...");
 		}
 		
+		public default void doAnotherThing() {
+			System.out.println("ISomeThing says: You can call this method directly from any instance of a concreted class "
+					+ "that implement me!");
+		}
+		
 		public static void doSomeThingUtil() {
 			System.out.println("You call the method doSomeThingUtil implemented at ISomeThing.java by using "
 					+ " ISomeThing.doSomeThingUtil. Use this method to do some thing util!");
@@ -104,6 +109,7 @@ public class DefaultMethod {
 				+ "constructor:");
 		FirstClass fc = new FirstClass();
 		fc.doSomeThing();
+		fc.doAnotherThing();
 		System.out.println("\n");
 		
 		System.out.println("SecondClass implements ISomeThing and IAnotherThing. It's need to overridden the method "
