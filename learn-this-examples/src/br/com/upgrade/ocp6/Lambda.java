@@ -153,6 +153,9 @@ public class Lambda {
 	 */
 	private static void defaultFuncionalInterfaces() {
 		
+		//interface Function<T, R>
+		
+		
 	}
 	
 	/**
