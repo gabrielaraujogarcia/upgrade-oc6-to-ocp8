@@ -20,6 +20,10 @@ public class Lambda {
 		private Integer age;
 		private Sex gender;
 		
+		public Person() {
+			
+		}
+		
 		public Person(String name, Integer age, Sex sex) {
 			this.name = name;
 			this.age = age;
@@ -71,6 +75,11 @@ public class Lambda {
 	private interface DoSomeThing {
 		void doSomeThing();
 	}
+
+	@FunctionalInterface
+	private interface DoThisOperation {
+		int doIt(int x, int y);
+	}
 	
 	/**
 	 * Método que executa o teste a ser realizado
@@ -99,6 +108,22 @@ public class Lambda {
 		roster.add(new Person("Moacir", 55, Person.Sex.MALE));
 		roster.add(new Person("Karla", 26, Person.Sex.FEMALE));
 		
+		//exemplos de utilização de expressões lambda
+		aboutLambda(roster);
+
+		//o que não deve ser feito
+		dontDoThis(roster);
+		
+		//exemplos que utilizam as interfaces funcionais padrão da API do Java 8
+		
+	}
+	
+	/**
+	 * Exemplos básicos de expressões lambda
+	 * @param roster
+	 */
+	private static void aboutLambda(List<Person> roster) {
+	
 		//antes do lambda, era comum utilizar classes anônimas para implementar uma tarefa de uma interface funcional
 		print(roster, new CheckPerson() {
 			
@@ -120,6 +145,54 @@ public class Lambda {
 		//quando o método abstrato da interface funcional não possui parâmetros, devemos adicionar os parênteses vazios
 		DoSomeThing d = () -> System.out.println("I did!");
 		d.doSomeThing();
+	
+	}
+	
+	/**
+	 * Exemplos de utilização das interfaces funcionais da API do Java 8
+	 */
+	private static void defaultFuncionalInterfaces() {
+		
+	}
+	
+	/**
+	 * Exemplos do que não deve ser feito. Remova os comentários e estude os problemas
+	 */
+	private static void dontDoThis(List<Person> roster) {
+		
+		//a expressão lambda não pode declarar uma variável com mesmo nome de outra variável no mesmo escopo. 
+		//se descomentar, apresenta erro de compilação
+		Person duplicated = new Person("Dercy Gonsalves", 150, Person.Sex.FEMALE);
+//		print(roster, duplicated -> {});
+//		print(roster, (Person other) -> {
+//			Person duplicated = new Person();
+//			return other.getAge() > 40;
+//		});
+		
+		//as variáveis declaradas e utilizadas nas expressões lambdas devem ser inicializadas
+		//se descomentar, apresenta erro de compilação
+		Person imNotIntilialized;
+		print(roster, p -> {
+			
+//			if(imNotIntilialized != null) {;
+//				return true;
+//			}
+			
+			return false;
+			
+		});
+		
+		//as variáveis que serão utilizadas nas expressões lambdas devem ser final
+		//se descomentar, apresenta erro de compilação
+		int x = 5;
+		int y = 10;
+		
+		DoThisOperation sumThis = (first, second) -> {
+//			x += 1;
+			return x + y;
+		};
+		
+		System.out.println(sumThis.doIt(x, y));
 		
 	}
 }
