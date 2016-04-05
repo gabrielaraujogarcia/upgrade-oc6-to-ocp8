@@ -34,25 +34,25 @@ public class Lambda {
 			return name;
 		}
 
-		public void setName(String name) {
-			this.name = name;
-		}
+//		public void setName(String name) {
+//			this.name = name;
+//		}
 
 		public Integer getAge() {
 			return age;
 		}
 
-		public void setAge(Integer age) {
-			this.age = age;
-		}
+//		public void setAge(Integer age) {
+//			this.age = age;
+//		}
 
 		public Sex getGender() {
 			return gender;
 		}
 
-		public void setGender(Sex gender) {
-			this.gender = gender;
-		}
+//		public void setGender(Sex gender) {
+//			this.gender = gender;
+//		}
 		
 	}
 	
@@ -76,13 +76,18 @@ public class Lambda {
 		void doSomeThing();
 	}
 
+	/**
+	 * Interface funcional para realizar uma oepração com dois inteiros
+	 * @author Gabriel
+	 *
+	 */
 	@FunctionalInterface
 	private interface DoThisOperation {
 		int doIt(int x, int y);
 	}
 	
 	/**
-	 * Método que executa o teste a ser realizado
+	 * Método que executa o teste a ser realizado na interface CheckPerson
 	 * @param roster
 	 * @param tester
 	 */
@@ -148,15 +153,6 @@ public class Lambda {
 	
 	}
 	
-	/**
-	 * Exemplos de utilização das interfaces funcionais da API do Java 8
-	 */
-	private static void defaultFuncionalInterfaces() {
-		
-		//interface Function<T, R>
-		
-		
-	}
 	
 	/**
 	 * Exemplos do que não deve ser feito. Remova os comentários e estude os problemas
