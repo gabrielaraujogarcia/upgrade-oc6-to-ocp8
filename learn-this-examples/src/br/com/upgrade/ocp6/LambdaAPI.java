@@ -3,6 +3,7 @@ package br.com.upgrade.ocp6;
 import java.math.BigDecimal;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class LambdaAPI {
 	
@@ -10,10 +11,12 @@ public class LambdaAPI {
 		
 		exampleOfFunction();
 		exampleOfConsumer();
+		exampleOfSupplier();
 	}
 	
 	/**
 	 * Uso da interface funcional java.util.consumer.Function<T, R>
+	 * método principal: R apply(T t);
 	 */
 	public static void exampleOfFunction() {
 		
@@ -29,6 +32,7 @@ public class LambdaAPI {
 	
 	/**
 	 * Uso da interface funcional java.util.function.Consumer<T>
+	 * método principal: void accept(T t)
 	 */
 	public static void exampleOfConsumer() {
 		
@@ -36,6 +40,44 @@ public class LambdaAPI {
 		Consumer<String> consumer = LambdaAPI::print; 		
 		consumer.accept("Consumer will do something with this text");
 		
+	}
+
+	/**
+	 * Uso da interface funcional java.util.function.Supplier<T>
+	 * Método principal: T get();
+	 */
+	public static void exampleOfSupplier() {
+
+		//sintaxe simplificada chamando um método que executa uma operação e  
+		//retorna um objeto T
+		Supplier<Integer> supplier = LambdaAPI::sum;
+		Integer result = supplier.get();
+		print(result.toString());
+
+		//sintaxe com código que executa uma operação em uma linha que retorna
+		//ou resulta em um objeto T
+		supplier = () -> 1;
+		result += supplier.get();
+		print(result.toString());
+		
+		//outra sintaxe para a mesma operação, agora com bloco de código 
+		//e instrução de retorno
+		supplier = () -> {
+			int x = 1;
+			return x;
+		};
+		
+		result += supplier.get();
+		print(result.toString());
+		
+		//Observe que o método T get() não recebe parâmetros, sendo assim, se utilizar 
+		//um método com parâmetros ou informar algum parâmetro, o código não compila 
+		//supplier = LambdaAPI::print;
+		//supplier = (Integer param) -> 10 + 5;
+		
+		//se o retorno da operação get() na expressão lambda não for igual o retorno
+		//esperado, o código não compila
+		//supplier = () -> "" + 1;
 	}
 	
 	/**
@@ -46,5 +88,11 @@ public class LambdaAPI {
 		System.out.println(s);
 	}
 	
+	/**
+	 * Retorna uma soma qualquer
+	 */
+	private static Integer sum() {
+		return 0 + 1;
+	}
 	
 }
