@@ -3,7 +3,11 @@ package br.com.upgrade.ocp6;
 import java.math.BigDecimal;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.function.UnaryOperator;
+
+import com.sun.org.apache.xpath.internal.operations.UnaryOperation;
 
 public class LambdaAPI {
 	
@@ -12,6 +16,8 @@ public class LambdaAPI {
 		exampleOfFunction();
 		exampleOfConsumer();
 		exampleOfSupplier();
+		exampleOfPredicate();
+		exampleOfUnaryOperator();
 	}
 	
 	/**
@@ -80,6 +86,30 @@ public class LambdaAPI {
 		//supplier = () -> "" + 1;
 	}
 	
+	private static void exampleOfPredicate() {
+		
+		Predicate<String> p = text -> text.equals("Some text");
+		print("Predicate 1: " + p.test("Another text"));
+		
+		p = LambdaAPI::isThisTextGreaterThan10;
+		System.out.println("Predicate 2: "+ p.test("ABCDEFGHIJKLMN"));
+		
+	}
+	
+	private static void exampleOfUnaryOperator() {
+		
+		UnaryOperator<Integer> uo = multiply -> multiply * multiply;
+		Integer x = 10;
+		
+		x = uo.apply(x);
+		print("UnaryOperator 1: " + x);
+		
+		uo = LambdaAPI::sum;
+		x = uo.apply(x);
+		print("UnaryOperator 2: " + x);
+		
+	}
+	
 	/**
 	 * Escreve no terminal
 	 * @param s
@@ -93,6 +123,24 @@ public class LambdaAPI {
 	 */
 	private static Integer sum() {
 		return 0 + 1;
+	}
+	
+	/**
+	 * Valida se o texto é maior que 10
+	 * @param text
+	 * @return
+	 */
+	private static boolean isThisTextGreaterThan10(String text) {
+		return text.length() > 10;
+	}
+	
+	/**
+	 * Soma um inteiro com ele mesmo
+	 * @param x
+	 * @return
+	 */
+	private static Integer sum(Integer x) {
+		return x + x;
 	}
 	
 }
