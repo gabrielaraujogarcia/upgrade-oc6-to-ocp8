@@ -1,6 +1,7 @@
 package br.com.upgrade.ocp6;
 
 import java.math.BigDecimal;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 public class OptionalExamples {
@@ -11,7 +12,7 @@ public class OptionalExamples {
 				new BigDecimal("1234.78"));
 		
 		Truck withInsurance = new Truck("Mercedes-Bens", defaultInsurance);
-		Truck withoutInsurance = new Truck("", null);
+		Truck withoutInsurance = new Truck("Scania", null);
 		
 		Driver d1 = new Driver("Sr. With Insurance", withInsurance);
 		Driver d2 = new Driver("Sr. Without Insurance", withoutInsurance);
@@ -19,10 +20,15 @@ public class OptionalExamples {
 		
 		printAutomaker(d1);
 		printAutomaker(d2);
+		printAutomaker(d3);
 		
 		printInsurance(d1);
 		printInsurance(d2);
 		printInsurance(d3);
+		
+		printAfterFilter(d1);
+		printAfterFilter(d2);
+		printAfterFilter(d3);
 		
 	}
 	
@@ -32,9 +38,14 @@ public class OptionalExamples {
 	 */
 	private static void printAutomaker(Driver d) {
 		
-		//esta linha de código substitui as validações de objetos nulos, repare que quandoo caminhão
-		//é nulo, o método .get().getAutomaker() não apresenta erro em tempo de execução
-		System.out.println(d.getTruck().get().getAutomaker());
+		System.out.println("\nDriver: " + d.getName());
+		
+		try {
+			//imprime a montadora se o caminão existir, senão lança a exceção NoSuchElementException
+			System.out.println(d.getTruck().get().getAutomaker());
+		} catch(NoSuchElementException e) {
+			System.out.println("Truck is null");
+		}
 		
 	}
 	
@@ -46,12 +57,12 @@ public class OptionalExamples {
 	 */
 	private static void printInsurance(Driver d) {
 		
-		System.out.println("Driver: " + d.getName());
+		System.out.println("\nDriver: " + d.getName());
 
 		//imprime os dados do seguro se existir um caminhão e se o caminhão possuir seguradora
 		System.out.println(d.getTruck().flatMap(Truck::getInsurance).map(Insurance::toString));
 
-		//o mesmo que o método anterior mas utilizando lambda
+		//o mesmo que o método anterior mas utilizando lambda e o método ifPresent
 		d.getTruck().flatMap(truck -> truck.getInsurance()).ifPresent(param -> {
 			System.out.println(param.toString());
 		});
@@ -68,6 +79,22 @@ public class OptionalExamples {
 		System.out.println();
 	}
 	
+	/**
+	 * Executa o filtro no caminão informado e, caso existir, imprime no console
+	 * @param d
+	 */
+	private static void printAfterFilter(Driver d) {
+		
+		System.out.println("\nDriver: " + d.getName());
+		
+		//filtra o caminão do motorista, se o mesmo existir e se possuir seguradora
+		d.getTruck().filter(truck -> truck.getInsurance().isPresent())
+			.ifPresent((Truck t) -> {
+				System.out.println("The driver " + d.name +" drives a "+ t.getAutomaker() +" truck.");	
+			});
+		
+	}
+		
 	private static class Driver {
 		
 		private String name;
@@ -84,7 +111,7 @@ public class OptionalExamples {
 				this.truck = Optional.of(truck);
 			} catch(NullPointerException e) {
 				System.out.println("NullPointerException because the param truck is null and the method"
-						+ "Optional.of(T value) does not acept null elements");
+						+ "Optional.of(T value) does not acept null elements\n");
 			}
 			
 		}
