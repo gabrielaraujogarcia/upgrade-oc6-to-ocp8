@@ -57,7 +57,7 @@ public class TryWithResources {
 	}
 	
 	/**
-	 * Realiza o teste do recurso que criamos log abaixo, apresentando a mensagem do método close() assim que o
+	 * Realiza o teste do recurso que criamos logo abaixo, apresentando a mensagem do método close() assim que o
 	 * bloco try finaliza seu processamento e então o MyResource é finalizado.
 	 */
 	private static void testMyResource() {
@@ -128,13 +128,15 @@ public class TryWithResources {
 	}
 	
 	/**
-	 * Este método te mostra o que você não pode fazer, estude com atenção
+	 * Este método mostra o que você não pode fazer, estude com atenção
 	 */
 	private static void dontDoThis() {
 		
 		//recursos declarados dentro do try-with-resources são implicitamente final, portanto nao podemos
 		//atribuir outros valores para os mesmos
-		try (MyResource mr = new MyResource(); AnotherResource ar = new AnotherResource()) {
+		try (MyResource mr = new MyResource(); AnotherResource ar = new AnotherResource();
+				//String imNotAResource = new String(""); //nao podemos instanciar uma classe que nao seja um resource
+			) {
 			System.out.println("Resources declared at try-with-resources are final, then next line can not be compiled.");
 			//remova o comentario da linha abaixo e veja se irá compilar
 			//mr = new MyResource();
@@ -146,7 +148,7 @@ public class TryWithResources {
 	
 
 	/**
-	 * Podemos criar a nossa propria class de recurso apenas implementando a interface java.lang.AutoClosable ou
+	 * Podemos criar a nossa propria classe de recurso apenas implementando a interface java.lang.AutoClosable ou
 	 * java.io.Closeable
 	 * @author ggarcia
 	 *

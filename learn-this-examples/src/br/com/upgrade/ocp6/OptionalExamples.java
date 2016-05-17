@@ -52,7 +52,7 @@ public class OptionalExamples {
 	/**
 	 * Se o motorista possuir caminhão e o caminhão possuir seguro, imprime as informações do seguro.
 	 * Repare que, quando o caminhão é nulo ou quando o seguro é nulo, não irá ocorrer erro em tempo
-	 * de execuçãos
+	 * de execução
 	 * @param d
 	 */
 	private static void printInsurance(Driver d) {
