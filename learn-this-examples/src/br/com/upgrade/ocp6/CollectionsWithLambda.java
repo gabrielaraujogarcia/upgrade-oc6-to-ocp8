@@ -4,13 +4,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
 public class CollectionsWithLambda {
 	
 	private static final List<Person> list = load();
 	private static int sumOfAges;
+	private static int count = 0;
 	
 	private static final Comparator<Person> BY_NAME = (p1, p2) -> {
 		return p1.getFirstName().compareTo(p2.getFirstName());
@@ -20,6 +23,7 @@ public class CollectionsWithLambda {
 		iteratesFilterAndSort();
 		searchData();
 		doCalculations();
+		saveResults();
 	}
 	
 	/**
@@ -160,9 +164,8 @@ public class CollectionsWithLambda {
 	 */
 	
 	/**
-	 * Tópico: Perform calculations on Java Streams by using count, max, min, average and sum  
-	 * methods and save results to a collection by using the collect method and Collector class,
-	 * including the averagingDouble, groupingBy, joining, partitioningBy methods 
+	 * Tópico (Parte 1): Perform calculations on Java Streams by using count, max, min, average and 
+	 * sum methods. 
 	 */
 	private static void doCalculations() {
 		count();
@@ -249,15 +252,124 @@ public class CollectionsWithLambda {
 		
 	}
 	
+	/**
+	 * Tópico (Parte 2): Save results to a collection by using the collect method and Collector class,
+	 * including the averagingDouble, groupingBy, joining, partitioningBy methods
+	 */
+	private static void saveResults() {
+		averaging();
+		groupingBy();
+		joining();
+		partitioningBy();
+	}
+	
+	/**
+	 * Exemplos de como realizar o cálculo da média dos elementos em uma collection
+	 * utilizando o método collect do Stream e os métodos da classe Collectors.
+	 */
+	@SuppressWarnings("serial")
+	private static void averaging() {
+		
+		double average = new ArrayList<Integer>(){{add(1); add(1); add(1);}}
+			.stream()
+			.collect(Collectors.averagingInt(number -> number));
+		System.out.println("Basic example of average: " + average);
+		
+		average = list.stream()
+			.map(Person::getAge)
+			.collect(Collectors.averagingDouble(age -> age));
+		System.out.println("Average of ages: " + average);
+		
+		average = list.stream()
+				.map(person -> person.getLastName())
+				.collect(Collectors.averagingDouble(lastName -> {
+					count++;
+					return lastName.toString().length();
+				}));
+		
+		System.out.println("Average of characteres on the last name of each person: "+ average);
+		System.out.println("Note that this algorithm goes 2 times for each element in a "
+				+ "collection. At moment I don't know why it happens. "+ count);
+	}
+	
+	/**
+	 * Exemplo de como agrupar os elementos na coleção utilizando o método collect do 
+	 * da API de Stream e o método groupingBy da classe Collectors.
+	 */
+	private static void groupingBy() {
+		
+		Map<String, List<Person>> group = list.stream()
+				.collect(Collectors.groupingBy(Person::getTeam));
+		
+		group.forEach((team, players) -> {
+			System.out.println("Team: " + team);
+			players.forEach(p -> System.out.println("\t" + p.getFirstName()+ 
+					" " + p.getLastName()));
+		});
+		
+		Map<String, Long> otherGroup = list.stream()
+					.collect(Collectors.groupingBy(Person::getTeam, 
+							Collectors.summingLong(Person::getAge)));
+		
+		otherGroup.forEach((team, ages) -> 
+			System.out.println("Team: "+ team + " | Sum of ages: " + ages));
+	}
+	
+	/**
+	 * Concatena todas as Strings mapeadas a partir do Stream da coleção sem 
+	 * separador, com separador e também com separator, prefixo e sufixo
+	 */
+	private static void joining() {
+		
+		String names = list.stream()
+			.filter(p -> p.getAge() < 29)
+			.map(Person::getFirstName)
+			.collect(Collectors.joining());
+		System.out.println("Joining without separator: "+ names);
+		
+		names = list.stream()
+				.filter(p -> p.getTeam().contains("Real"))
+				.map(Person::getLastName)
+				.collect(Collectors.joining(", "));
+		System.out.println("Joining with separator: "+ names);
+		
+		names = list.stream()
+				.filter(p -> p.getLastName().contains("s"))
+				.map(Person::getLastName)
+				.collect(Collectors.joining(", ", "The last name of the players ", " contains \"s\"!"));
+		System.out.println("Joining with separator, prefix and suffix: "+ names);
+		
+	}
+	
+	/**
+	 * Realiza a separação da coleção a partir do método da classe Collectors.partitionBy
+	 * que, realiza a validação do predicado e então divide os elementos em dois grupos,
+	 * sendo eles, os que atendem a condição e os que não atendem a condição.
+	 */
+	private static void partitioningBy() {
+		
+		Map<Boolean, List<Person>> partitionByAge = list.stream()
+				.collect(Collectors.partitioningBy(p -> p.getAge() > 28));
+		
+		partitionByAge.forEach((key, list) -> {
+			System.out.println("That guys has more then 28? " + key + ". Who are they? \n");
+			list.forEach(p -> System.out.println(p.toString()+ " \n"));
+			System.out.println("");
+		});
+		
+	}
+	
 	private class Person {
 		
 		private String firstName;
 		private String lastName;
+		private String team;
 		private Integer age;
 		
-		public Person(String firstName, String lastName, Integer age) {
+		public Person(String firstName, String lastName, String team, Integer age) {
 			this.firstName = firstName;
 			this.lastName = lastName;
+			this.team = team;
 			this.age = age;
 		}
 		
@@ -266,11 +378,26 @@ public class CollectionsWithLambda {
 		}
 		
 		public String getFirstName() {
-			return firstName;
+			return this.firstName;
 		}
 		
 		public String getLastName() {
-			return lastName;
+			return this.lastName;
+		}
+		
+		public String getTeam() {
+			return this.team;
+		}
+		
+		@Override
+		public String toString() {
+			StringBuilder sb = new StringBuilder("Name: ")
+					.append(firstName).append(" ").append(lastName)
+					.append(System.lineSeparator())
+					.append("Age: ").append(age)
+					.append(System.lineSeparator())
+					.append("Team: ").append(team);
+			return sb.toString(); 
 		}
 		
 	}
@@ -280,12 +407,12 @@ public class CollectionsWithLambda {
 		CollectionsWithLambda c = new CollectionsWithLambda();
 		List<Person> starsOfFootball = new ArrayList<>();
 		
-		starsOfFootball.add(c.new Person("Lionel", "Messi", 28));
-		starsOfFootball.add(c.new Person("Luis", "Suares", 29));
-		starsOfFootball.add(c.new Person("Neymar", "Jr", 24));
-		starsOfFootball.add(c.new Person("Cristiano", "Ronaldo", 31));
-		starsOfFootball.add(c.new Person("James", "Rodrigues", 24));
-		starsOfFootball.add(c.new Person("Karim", "Benzema", 28));
+		starsOfFootball.add(c.new Person("Lionel", "Messi", "Barcelona", 28));
+		starsOfFootball.add(c.new Person("Luis", "Suares", "Barcelona", 29));
+		starsOfFootball.add(c.new Person("Neymar", "Jr", "Barcelona", 24));
+		starsOfFootball.add(c.new Person("Cristiano", "Ronaldo", "Real Madrid", 31));
+		starsOfFootball.add(c.new Person("James", "Rodrigues", "Real Madrid", 24));
+		starsOfFootball.add(c.new Person("Karim", "Benzema", "Real Madrid", 28));
 		
 		return starsOfFootball;
 
