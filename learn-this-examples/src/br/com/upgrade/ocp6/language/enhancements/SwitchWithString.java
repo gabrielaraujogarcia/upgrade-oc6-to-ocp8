@@ -1,4 +1,4 @@
-package br.com.upgrade.ocp6;
+package br.com.upgrade.ocp6.language.enhancements;
 
 public class SwitchWithString {
 

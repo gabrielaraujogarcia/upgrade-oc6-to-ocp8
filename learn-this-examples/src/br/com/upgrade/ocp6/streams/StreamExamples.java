@@ -1,4 +1,4 @@
-package br.com.upgrade.ocp6;
+package br.com.upgrade.ocp6.streams;
 
 import java.util.ArrayList;
 import java.util.Arrays;

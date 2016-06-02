@@ -1,4 +1,4 @@
-package br.com.upgrade.ocp6;
+package br.com.upgrade.ocp6.lambda;
 
 public class FunctionalInterfaces {
 
