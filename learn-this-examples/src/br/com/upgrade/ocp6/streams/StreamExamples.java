@@ -11,12 +11,13 @@ public class StreamExamples {
 	public static void main(String[] args) {
 		exampleIntStream();
 		exampleArrayStream();
+		exampleCollect();
 	}
 	
 	/**
 	 * Exemplo do uso da interface IntStream
 	 */
-	public static void exampleIntStream() {
+	private static void exampleIntStream() {
 		
 		//Cria um IntStream exclusivo contendo os inteiros de 0 a 5 e então imprime os mesmos
 		//Same as: IntStream x = IntStream.range(0, 6); x.forEach(System.out::println);
@@ -32,7 +33,7 @@ public class StreamExamples {
 	/**
 	 * Exemplo de uso da API de Stream com Array
 	 */
-	public static void exampleArrayStream() {
+	private static void exampleArrayStream() {
 		
 		List<String> myList = Arrays.asList("item 11", "item 12", "item 31", "item 35", "item 45");
 		System.out.println("");
@@ -56,7 +57,7 @@ public class StreamExamples {
 	/**
 	 * Recupera uma nova coleção a partir da coleção original com a classe Collectors
 	 */
-	public static void exampleCollect() {
+	private static void exampleCollect() {
 		
 		List<Person> list = new ArrayList<>();
 			
@@ -71,6 +72,8 @@ public class StreamExamples {
 			.filter(p -> p.getAge() > 20 && p.getAge() < 30)
 			.collect(Collectors.toList());
 		
+		System.out.println(System.lineSeparator());
+		filtered.stream().map(Person::getName).collect(Collectors.joining(", "));
 	}
 	
 	private static class Person {

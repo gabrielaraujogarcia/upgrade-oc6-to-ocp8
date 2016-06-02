@@ -7,12 +7,9 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
-import com.sun.org.apache.xpath.internal.operations.UnaryOperation;
-
 public class LambdaAPI {
 	
 	public static void main(String[] args) {
-		
 		exampleOfFunction();
 		exampleOfConsumer();
 		exampleOfSupplier();

@@ -61,9 +61,9 @@ public class SaveResultsToCollection {
 					" " + p.getLastName()));
 		});
 		
-		Map<String, Long> otherGroup = list.stream()
+		Map<String, Integer> otherGroup = list.stream()
 					.collect(Collectors.groupingBy(Person::getTeam, 
-							Collectors.summingLong(Person::getAge)));
+							Collectors.summingInt(Person::getAge)));
 		
 		otherGroup.forEach((team, ages) -> 
 			System.out.println("Team: "+ team + " | Sum of ages: " + ages));
