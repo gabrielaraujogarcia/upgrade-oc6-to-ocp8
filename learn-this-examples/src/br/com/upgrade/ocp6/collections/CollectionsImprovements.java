@@ -137,9 +137,16 @@ public class CollectionsImprovements {
 		 * diferente de nulo.
 		 */
 		Person p = list.stream().findAny().get();
-		map.put(p, p.getFirstName());
 		
+		//computando sem adicionar
+		map.computeIfPresent(p, (person, lastName) -> person.getLastName());
+		System.out.println("Before add: " + map.get(p));
+		
+		//adiciona
+		map.put(p, p.getFirstName());
 		System.out.println("Before computing: " + map.get(p));
+		
+		//computa o valor adicionado
 		map.computeIfPresent(p, (person, lastName) -> person.getLastName());
 		System.out.println("After computing: " + map.get(p));
 		
