@@ -36,8 +36,10 @@ public class CollectionsImprovements {
 	 */
 	private static void replaceAll() {
 		
+		List<Person> other = Person.load();
+		
 		//filtra
-		List<String> names = list.stream()
+		List<String> names = other.stream()
 			.map(p -> p.getFirstName() + " " + p.getLastName()) //retorna stream
 			.collect(Collectors.toList()); //retorna uma lista
 		
@@ -47,6 +49,9 @@ public class CollectionsImprovements {
 		//imprime cada ocorrência
 		names.forEach(System.out::println);
 		System.out.print(System.lineSeparator());
+		
+		other.replaceAll(person -> person.getAge() < 28 ? null : person);
+		other.forEach(person -> System.out.println(person != null ? person.getFirstName() : "replaced!"));
 		
 	}
 	
@@ -70,7 +75,7 @@ public class CollectionsImprovements {
 	
 	/**
 	 * Computa os valores do mapa e, se uma chave não estiver associada a um valor ou associada com
-	 * um valor nulo, o valor é computado de acordo com a Function e adicionado ao mapa.
+	 * um valor nulo, o valor é computado de acordo com a BiFunction e adicionado ao mapa.
 	 */
 	private static void computeIfAbsent() {
 
@@ -125,7 +130,7 @@ public class CollectionsImprovements {
 	/**
 	 * Computa uma dada chave do mapa e, caso a mesma exista na coleção e seu valor
 	 * seja diferente de nulo, o mesmo é computado e um novo valor é atribuido de
-	 * acordo com o retorno da Function informada.
+	 * acordo com o retorno da BiFunction informada.
 	 */
 	private static void computeIfPresent() {
 		
