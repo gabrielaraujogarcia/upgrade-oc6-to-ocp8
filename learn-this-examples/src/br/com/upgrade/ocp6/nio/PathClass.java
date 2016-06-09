@@ -1,6 +1,5 @@
 package br.com.upgrade.ocp6.nio;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -18,6 +17,10 @@ public class PathClass {
 		resolve();
 		System.out.println(System.lineSeparator());
 		compare();
+		System.out.println(System.lineSeparator());
+		fileName();
+		System.out.println(System.lineSeparator());
+		relativize();
 	}
 	
 	/**
@@ -59,7 +62,7 @@ public class PathClass {
 		//o mesmo que for(Path p : path) {...}
 		path.forEach(p -> System.out.print("Path: "+p+", "));
 		
-		//recupera o segundo diretório/arquivo do caminho. Observe que a contagem começa com o index 0
+		//recupera o terceiro diretório/arquivo do caminho. Observe que a contagem começa com o index 0
 		System.out.println("\nSecond path (first index is 0): " + path.getName(2));
 				
 	}
@@ -69,13 +72,14 @@ public class PathClass {
 	 * O índice de contagem dos nomes inicia-se em 0.
 	 */
 	private static void subpath() {
-		Path path = Paths.get(System.getProperty("user.home") +  "/Volumes/Apple_HD_1TB/OPC8/test1.txt");
+		Path path = Paths.get(System.getProperty("user.home") +  "/Volumes/Apple_HD_1TB/OCP8/test1.txt");
 		System.out.println("Path: " + path);
+		//repare que o root não é considerado
 		System.out.println("Subpath: "+ path.subpath(2,  4));
 	}
 	
 	/**
-	 * O método xxx permite que, a partir de um Path, adicionemos mais paths ao mesmo
+	 * O método resolve permite que, a partir de um Path, adicionemos mais paths ao mesmo (join).
 	 */
 	private static void resolve() {
 		
@@ -100,6 +104,28 @@ public class PathClass {
 		Path file2 = fixedPath.resolveSibling("file2.txt");
 		System.out.println("File 2: " + file2);
 	}
+
+	/**
+	 * Quando temos dois diretórios com o mesmo pai e queremos navegar do diretório 1 para o diretório 2,
+	 * temos que andar para o diretório pai dos mesmos e então entrar no diretório que desejamos. Ou a 
+	 * partir da API de NIO.2, podemos utilizar o método relativize.
+	 * 
+	 */
+	private static void relativize() {
+		
+		Path p1 = Paths.get("/Users/user1");
+		Path p2 = Paths.get("/Users/user2");
+		
+		System.out.println(p1.relativize(p2));
+		System.out.println(p2.relativize(p1));
+		
+		Path p3 = Paths.get("home");
+		Path p4 = Paths.get("home/sally/bar");
+		
+		System.out.println(p3.relativize(p4));
+		System.out.println(p4.relativize(p3));
+		
+	}
 	
 	/**
 	 * Utiliza a interface Files para comparar dois arquivos e então valida se os mesmos são iguais com a ajuda do 
@@ -119,6 +145,14 @@ public class PathClass {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	/**
+	 * Recupera o nome do arquivo sendo este o último elemento do caminho.
+	 */
+	private static void fileName() {
+		Path path = Paths.get(System.getProperty("user.home"), "Downloads", "file1.txt");
+		System.out.println(path.getFileName());
 	}
 	
 }
