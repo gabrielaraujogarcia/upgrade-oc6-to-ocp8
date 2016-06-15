@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 
 public class FileClass {
 
@@ -22,10 +23,16 @@ public class FileClass {
 		System.out.println("****** DELETE ******");
 		doDelete();
 		System.out.println(System.lineSeparator());
+
+		//TODO does not work, dont learn this, 
+		//see https://stackoverflow.com/questions/15137849/java-using-nio-files-copy-to-move-directory
+//		System.out.println("****** COPY ******");
+//		doCopy();
+//		System.out.println(System.lineSeparator());
 		
-		System.out.println("****** COPY ******");
-		doCopy();
-		System.out.println(System.lineSeparator());
+//		System.out.println("****** MOVE ******");
+//		doMove();
+//		System.out.println(System.lineSeparator());
 		
 	}
 
@@ -129,6 +136,7 @@ public class FileClass {
 	}
 	
 	/**
+	 * TODO nao esta funcionando
 	 * Copia um arquivo de um path para o outro. Se o path em questão for um diretório, os arquivos
 	 * não são copiados e será criado um diretório vazio ao menos 
 	 */
@@ -137,40 +145,74 @@ public class FileClass {
 		Path source = fixed.resolve("ocp8.txt");
 		createFile(source);
 		
-		Path destination = fixed.resolve("OCP8");
+		Path destination = fixed.resolve("OCP8_COPY_NIO/ocp8.txt");
 		createDirectory(destination);
 		
-		//copia do source para o destination
-		copy(source, destination);
-		Path file = destination.resolve(source);
-		System.out.println("New path: " + file);
-		System.out.println("Is copied? " + Files.exists(file));
-		
+		System.out.println("Is " + destination + " a directory? " + Files.isDirectory(destination));
+		copy(source, destination, StandardCopyOption.COPY_ATTRIBUTES);
+
 	}
 	
-//	/**
-//	 * Copia o arquivo source para o target
-//	 * @param source
-//	 * @param target
-//	 */
-//	private static void copy(Path source, Path target, StandardCopyOption option) {
-//		
-//		try {
-//			Files.copy(source, target, option);
-//		} catch (IOException e) {
-//			System.out.println("(IOException) Something went wrong: ");
-//			e.printStackTrace();
-//		}
-//		
-//	}
-	
+	/**
+	 * Copia o arquivo source para o destination. O método Files.copy cria o arquivo/diretório 
+	 * destination e, se o destination já existir, será escrita a exceção FileAlreadyExistsException 
+	 * e o processamento continua normalmente.
+	 * @param source
+	 * @param destination
+	 */
 	private static void copy(Path source, Path destination) {
 		
 		try {
 			Files.copy(source, destination);
+			System.out.println("File copied!");
 		} catch (IOException e) {
 			System.out.println("(IOException) Something went wrong: ");
 			e.printStackTrace();
+		}
+		
+	}
+	
+	/**
+	 * Copia o arquivo source para o target
+	 * @param source
+	 * @param target
+	 */
+	private static void copy(Path source, Path target, StandardCopyOption option) {
+		
+		try {
+			Files.copy(source, target, option);
+		} catch(IOException e) {
+			System.out.println("(IOException) Something went wrong: " + e.getMessage());
+			e.printStackTrace();
+		}
+		
+	}
+	
+	private static void doMove() {
+		
+		Path source = fixed.resolve("ocp8.txt");
+		createFile(source);
+		
+		Path destination = fixed.resolve("OCP8_NIO_MOVE");
+		createDirectory(destination);
+		
+		System.out.println("Is " + destination + " a directory? " + Files.isDirectory(destination));
+		move(source, destination);
+		
+	}
+	
+	
+	private static void move(Path source, Path destination) {
+		
+		try {
+			
+			if(Files.isDirectory(destination)) {
+				Files.move(source, destination);
+			}
+			
+		} catch(IOException e) {
+			System.out.println("(IOException) Something went wrong: " + e.getMessage());
+			 e.printStackTrace();
 		}
 		
 	}
@@ -182,8 +224,12 @@ public class FileClass {
 	private static void createFile(Path pathToCreate) {
 		
 		try {
-			System.out.println("Create file " + pathToCreate);
-			Files.createFile(pathToCreate);
+			
+			if(!Files.exists(pathToCreate)) {
+				System.out.println("Create file " + pathToCreate);
+				Files.createFile(pathToCreate);
+			}
+			
 		} catch(FileAlreadyExistsException e) {
 			System.out.println("(FileAlreadyExistsException) This file already exists: " + e.getMessage());
 		} catch(IOException e) {
@@ -199,8 +245,14 @@ public class FileClass {
 	private static void createDirectory(Path pathToCreate) {
 		
 		try {
-			System.out.println("Create directory " + pathToCreate);
-			Files.createDirectory(pathToCreate);
+			
+			if(!Files.exists(pathToCreate)) {
+				System.out.println("Create directory " + pathToCreate);
+				Files.createDirectory(pathToCreate);
+			} else {
+				System.out.println("Directory already exist: " + pathToCreate);
+			}
+			
 		}catch(FileAlreadyExistsException e) {
 			System.out.println("(FileAlreadyExistsException) This directory already exists: " + e.getMessage());
 		} catch(IOException e) {
