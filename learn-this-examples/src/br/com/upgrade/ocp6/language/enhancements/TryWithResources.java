@@ -5,8 +5,13 @@ import java.io.Closeable;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Stream;
 
 public class TryWithResources {
 	
@@ -128,6 +133,28 @@ public class TryWithResources {
 	}
 	
 	/**
+	 * Lê um arquivo com ajuda do método Files.lines(path) e imprime as mesmas. Observe que o 
+	 * try-with-resources não exige a existência das cláusulas catch e/ou finally
+	 * @throws IOException
+	 */
+	private static void lines() throws IOException {
+	    
+		Path start = Paths.get(System.getProperty("user.home"), "Downloads").resolve("ocp8.java");
+	    
+	    if(Files.exists(start)) {
+	    	
+	    	//try-with-resrouces nao exige as cláusulas catch e/ou finally
+	    	try (Stream<String> lines = Files.lines(start)) {
+		        lines.forEach(p -> System.out.println(p));
+		    }
+	    	
+	    } else {
+	    	System.out.println("The file " + start + " does not exists!");
+	    }
+	    
+	}
+	
+	/**
 	 * Este método mostra o que você não pode fazer, estude com atenção
 	 */
 	private static void dontDoThis() {
@@ -146,7 +173,6 @@ public class TryWithResources {
 		
 	}
 	
-
 	/**
 	 * Podemos criar a nossa propria classe de recurso apenas implementando a interface java.lang.AutoClosable ou
 	 * java.io.Closeable
