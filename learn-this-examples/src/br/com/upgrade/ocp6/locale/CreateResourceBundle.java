@@ -56,11 +56,10 @@ public class CreateResourceBundle {
 	  * @param args
 	  */
 	 public static void main(String[] args) {
-		 
-		 Locale locale = Locale.US;
-		 ResourceBundle bundle = ResourceBundle.getBundle("MyResources", locale);
+
 		 //também funciona, ele irá procurar pelo locale e depois pelo default (sem linguagem)
-//		 ResourceBundle bundle = ResourceBundle.getBundle("MyResources"); 
+//		 ResourceBundle bundle = ResourceBundle.getBundle("MyResources");
+		 ResourceBundle bundle = ResourceBundle.getBundle("MyResources", Locale.US);
 		 System.out.println(bundle.getString("cancelKey"));
 		 
 		 //outra forma de criar o Locale. Existem mais variações mas todas a partir de métodos Fábrica
