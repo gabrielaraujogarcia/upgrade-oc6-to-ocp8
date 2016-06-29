@@ -6,15 +6,20 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Locale;
 
-public class Format {
+public class DateParseAndFormat {
 
 	public static void main(String[] args) {
+		
 		parseDate();
+		System.out.println(System.lineSeparator());
+		
 		formatDate();
+		System.out.println(System.lineSeparator());
+
 	}
 	
 	/**
-	 * Cria uma data a partir de uma String do pattern desta data
+	 * Cria uma data a partir de uma data no formato String e o pattern desta data
 	 */
 	private static void parseDate() {
 		
@@ -24,9 +29,12 @@ public class Format {
 		
 		try {
 			
-			
 			LocalDate date = LocalDate.parse(in, formatter);
 			System.out.println(date);
+			
+			//LocalDateTime também possui o método parse que recebe o formatador
+			LocalDateTime dateTime = LocalDateTime.parse(in, formatter);
+			System.out.println(dateTime);
 			
 			in = "1980-07-19";
 			date = LocalDate.parse(in);
@@ -49,6 +57,7 @@ public class Format {
 	 * Converte a data em uma String de acordo com o pattern desejado
 	 */
 	private static void formatDate() {
+		
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM yyyy HH:mm:ss", new Locale("pt"));
 		System.out.println(formatter.format(LocalDateTime.now()));
 		
@@ -57,5 +66,12 @@ public class Format {
 		
 		formatter = DateTimeFormatter.ofPattern("d MMMM yyyy HH:mm:ss");
 		System.out.println(formatter.format(LocalDateTime.now()));
+
 	}
+	
+	
+	
+	
+	
+	
 }
