@@ -68,7 +68,7 @@ public class PathClass {
 	}
 	
 	/**
-	 * Extraii um subpath a partir do path principal, através da contagem de nomes do mesmo. Observe que
+	 * Extrai um subpath a partir do path principal, através da contagem de nomes do mesmo. Observe que
 	 * O índice de contagem dos nomes inicia-se em 0.
 	 */
 	private static void subpath() {

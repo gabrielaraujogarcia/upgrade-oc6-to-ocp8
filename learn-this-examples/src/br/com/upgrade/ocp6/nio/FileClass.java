@@ -97,8 +97,7 @@ public class FileClass {
 	/**
 	 * Na API de NIO 2, podemos facilmente deletar arquivos com ajuda dos métodos delete(Path).
 	 * - Se estivermos deletando um arquivo e o mesmo não existir, irá lançar um NoSuchFileException;
-	 * - Se estivermos deletando um diretório e o mesmo não estiver vazio, irá lançar 
-	 * DirectoryNotEmptyException;
+	 * - Se estivermos deletando um diretório e o mesmo não estiver vazio, irá lançar  DirectoryNotEmptyException;
 	 * @param pathToDelete 
 	 */
 	private static void delete(Path pathToDelete) {

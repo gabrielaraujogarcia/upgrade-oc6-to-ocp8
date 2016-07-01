@@ -49,8 +49,7 @@ public class FileVisitorInterface {
 		 * Executa quando visita uma arquivo
 		 */
 		@Override
-	    public FileVisitResult visitFile(Path file,
-	                                   BasicFileAttributes attr) {
+	    public FileVisitResult visitFile(Path file, BasicFileAttributes attr) {
 	        if (attr.isSymbolicLink()) {
 	            System.out.format("Symbolic link: %s ", file);
 	        } else if (attr.isRegularFile()) {

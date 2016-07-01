@@ -2,7 +2,6 @@ package br.com.upgrade.ocp6.enthuware;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.ArrayList;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
