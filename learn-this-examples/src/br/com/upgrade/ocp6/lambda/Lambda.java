@@ -34,26 +34,14 @@ public class Lambda {
 			return name;
 		}
 
-//		public void setName(String name) {
-//			this.name = name;
-//		}
-
 		public Integer getAge() {
 			return age;
 		}
-
-//		public void setAge(Integer age) {
-//			this.age = age;
-//		}
 
 		public Sex getGender() {
 			return gender;
 		}
 
-//		public void setGender(Sex gender) {
-//			this.gender = gender;
-//		}
-		
 	}
 	
 	/**
@@ -141,7 +129,7 @@ public class Lambda {
 		
 		//após a adição do lambda na linguagem, podemos simplificar para esta expressão
 		System.out.print("\n");
-		print(roster, (Person p) -> p.getAge() < 30); //ou print(roster, (p) -> p.getAge() < 30);
+		print(roster, (Person p) -> p.getAge() < 30); //ou print(roster, p -> p.getAge() < 30);
 		
 		//podemos omitir o parênteses do parâmetro quando o método abstrato da interface possui apenas um parâmetro
 		System.out.print("\n");
@@ -181,7 +169,7 @@ public class Lambda {
 			
 		});
 		
-		//as variáveis que serão utilizadas nas expressões lambdas devem ser final
+		//as variáveis que serão utilizadas nas expressões lambdas devem ser final ou implicitamente final
 		//se descomentar, apresenta erro de compilação
 		int x = 5;
 		int y = 10;

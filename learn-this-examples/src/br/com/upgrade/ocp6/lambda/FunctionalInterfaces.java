@@ -11,8 +11,8 @@ public class FunctionalInterfaces {
 	}
  	
 	/**
-	 * Uma interface funcional possui apenas um método abstrato, desde que não seja um método sobrescrito
-	 * da classe java.lang.Object pois os mesmos não de implementção obrigatória na classe que implementar
+	 * Uma interface funcional possui apenas um método abstrato, desde que não seja um método sobrescrito da
+	 * classe java.lang.Object pois os mesmos não são de implementção obrigatória na classe que implementar
 	 * esta interface. 
 	 */
 	@FunctionalInterface

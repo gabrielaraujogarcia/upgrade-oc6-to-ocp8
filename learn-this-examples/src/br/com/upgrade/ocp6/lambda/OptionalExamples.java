@@ -72,7 +72,7 @@ public class OptionalExamples {
 		System.out.println("Insurance: "+i.getCompany());
 		
 		//mapeia o resultado de Truck::getAutomaker e se o mesmo não existir, imprime Unknow
-		System.out.println(d.getTruck().map(Truck::getAutomaker).orElse("Unknown autoamaker"));
+		System.out.println("Autoamaker: " + d.getTruck().map(Truck::getAutomaker).orElse("Unknown"));
 		
 		//descomente para entender porquê devemos utilizar o flatMap em alguns casos como este
 		//d.getTruck().map(Truck::getInsurance).ifPresent(Insurance::toString);
@@ -154,10 +154,6 @@ public class OptionalExamples {
 		public Insurance(String company, BigDecimal value) {
 			this.company = company;
 			this.value = value;
-		}
-
-		public BigDecimal getValue() {
-			return value;
 		}
 
 		public String getCompany() {
