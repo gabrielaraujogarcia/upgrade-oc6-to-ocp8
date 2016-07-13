@@ -11,9 +11,9 @@ public class CiclicBarrierExample {
 		Runnable barrier1Action = () -> System.out.println("BarrierAction 1 executed ");
 		
 		//callback para quando o barril 1 estiver pronto para liberar as threads em espera
-		Runnable barrier2Action= () -> System.out.println("BarrierAction 2 executed ");
+		Runnable barrier2Action = () -> System.out.println("BarrierAction 2 executed ");
 
-		//CyclicBarrier que aguarda 2 thrads antes de liberar as mesmas ou quando um evento de interrupção é lançado
+		//CyclicBarrier que aguarda 2 threads antes de liberar as mesmas ou quando um evento de interrupção é lançado
 		CyclicBarrier barrier1 = new CyclicBarrier(2, barrier1Action);
 		CyclicBarrier barrier2 = new CyclicBarrier(2, barrier2Action);
 
